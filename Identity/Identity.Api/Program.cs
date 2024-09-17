@@ -9,9 +9,16 @@ builder.Services.AddDbContext<IdentityDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<Handler>();
 builder.Services.AddScoped<JwtGenerator>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(config =>
+{
+    config.CustomSchemaIds(ss => ss.FullName);
+});
 
 var app = builder.Build();
 app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapPost("/Token", (Handler handler, Query query) =>
 {

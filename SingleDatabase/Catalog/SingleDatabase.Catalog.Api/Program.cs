@@ -27,11 +27,18 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<SingleDatabase.Catalog.Application.Products.Post.Handler>();
 builder.Services.AddScoped<SingleDatabase.Catalog.Application.Products.Get.Handler>();
 builder.Services.AddScoped<TenantProvider>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(config =>
+{
+    config.CustomSchemaIds(ss => ss.FullName);
+});
 
 var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapPost("/", (SingleDatabase.Catalog.Application.Products.Post.Handler handler, SingleDatabase.Catalog.Application.Products.Post.Command command) =>
 {

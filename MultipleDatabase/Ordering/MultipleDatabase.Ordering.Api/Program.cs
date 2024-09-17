@@ -27,20 +27,27 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<MultipleDatabase.Ordering.Application.Orders.Post.Handler>();
 builder.Services.AddScoped<MultipleDatabase.Ordering.Application.Orders.Get.Handler>();
 builder.Services.AddScoped<TenantProvider>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(config =>
+{
+    config.CustomSchemaIds(ss => ss.FullName);
+});
 
 var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapGet("/", (MultipleDatabase.Ordering.Application.Orders.Get.Handler handler) =>
-{
-    return handler.Handle();
-}).RequireAuthorization();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapPost("/", (MultipleDatabase.Ordering.Application.Orders.Post.Handler handler, MultipleDatabase.Ordering.Application.Orders.Post.Command command) =>
 {
     return handler.Handle(command);
+}).RequireAuthorization();
+
+app.MapGet("/", (MultipleDatabase.Ordering.Application.Orders.Get.Handler handler) =>
+{
+    return handler.Handle();
 }).RequireAuthorization();
 
 app.Run();
