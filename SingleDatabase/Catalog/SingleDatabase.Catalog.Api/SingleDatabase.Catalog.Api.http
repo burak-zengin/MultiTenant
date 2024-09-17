@@ -1,0 +1,6 @@
+@SingleDatabase.Catalog.Api_HostAddress = http://localhost:5023
+
+GET {{SingleDatabase.Catalog.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

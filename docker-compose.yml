@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  database:
+    image: "mcr.microsoft.com/azure-sql-edge"
+    container_name: sql
+    environment:
+        - ACCEPT_EULA=1
+        - MSSQL_USER=SA
+        - MSSQL_SA_PASSWORD=P@sSw0rd!
+        - MSSQL_PID=Developer
+    ports:
+        - "1433:1433"
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapi
+    build:
+      context: .
+      dockerfile: Identity/Identity.Api/Dockerfile
+  ordering.api:
+    image: ${DOCKER_REGISTRY-}orderingapi
+    build:
+      context: .
+      dockerfile: MultipleDatabase/Ordering/MultipleDatabase.Ordering.Api/Dockerfile
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: SingleDatabase/Catalog/SingleDatabase.Catalog.Api/Dockerfile
