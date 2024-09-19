@@ -5,7 +5,7 @@ namespace Identity.Application.Users.GetToken;
 
 public class Handler(IUserRepository repository, JwtGenerator jwtGenerator)
 {
-    public string Handle(Query query)
+    public string Handle(Command query)
     {
         var user = repository.Get(query.Username, query.Password);
         if (user is null)
